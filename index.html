@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hacker Escape Rooms</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="Hacker Escape Rooms home">
+          <img class="logo" src="assets/logo.png" alt="" width="72" height="40" />
+          <span class="brand-name">Hacker Escape<br class="brand-break" />Rooms</span>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+        >
+          <span class="visually-hidden">Menu</span>
+          <span class="nav-toggle-bar" aria-hidden="true"></span>
+          <span class="nav-toggle-bar" aria-hidden="true"></span>
+          <span class="nav-toggle-bar" aria-hidden="true"></span>
+        </button>
+
+        <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+          <ul>
+            <li><a href="#play-online">Play online</a></li>
+            <li><a href="#play-onsite">Play on-site</a></li>
+            <li><a href="#story">The story</a></li>
+            <li><a href="#contact">Contact us</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-label="Featured">
+        <img
+          class="hero-media"
+          src="assets/home-Image.png"
+          alt="Person in a hoodie working at multiple monitors in a dimly lit room"
+          width="1600"
+          height="700"
+        />
+        <div class="hero-actions cta-pair">
+          <a class="btn btn-primary cta-online" href="#play-online">Online challenges</a>
+          <a class="btn btn-secondary cta-onsite" href="#play-onsite">On-site challenges</a>
+        </div>
+      </section>
+
+      <section class="testimonials" aria-label="Testimonials">
+        <div class="container testimonials-grid">
+          <figure class="testimonial">
+            <img
+              class="testimonial-avatar"
+              src="assets/John-Doe.jpg"
+              alt="Portrait of John Doe"
+              width="56"
+              height="56"
+            />
+            <blockquote>
+              <p>
+                This is a quote about how amazing this place is and how much fun
+                me and my friends had when we tried it
+              </p>
+            </blockquote>
+            <figcaption>John Doe, visited us in September 2021</figcaption>
+          </figure>
+
+          <figure class="testimonial">
+            <img
+              class="testimonial-avatar"
+              src="assets/Jane-Doe.jpg"
+              alt="Portrait of Jane Doe"
+              width="56"
+              height="56"
+            />
+            <blockquote>
+              <p>
+                This is a quote about how amazing this place is and how much fun
+                me and my friends had when we tried it
+              </p>
+            </blockquote>
+            <figcaption>Jane Doe, visited us in September 2021</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="challenges" id="play-online" aria-labelledby="challenges-heading">
+        <div class="container">
+          <h2 id="challenges-heading">Popular challenges right now</h2>
+
+          <ul class="challenge-grid">
+            <li class="challenge-card">
+              <img
+                class="challenge-media"
+                src="assets/challanges.png"
+                alt=""
+                width="640"
+                height="400"
+              />
+              <div class="challenge-body">
+                <h3>Title of room (on-site)</h3>
+                <div class="challenge-meta">
+                  <span class="stars" aria-label="4 out of 5 stars">
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star" aria-hidden="true">★</span>
+                  </span>
+                  <span class="participants">2–6 participants</span>
+                </div>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <a class="btn btn-primary btn-small" href="#contact">Book this room</a>
+              </div>
+            </li>
+
+            <li class="challenge-card">
+              <img
+                class="challenge-media"
+                src="assets/challanges.png"
+                alt=""
+                width="640"
+                height="400"
+              />
+              <div class="challenge-body">
+                <h3>Title of room (on-site)</h3>
+                <div class="challenge-meta">
+                  <span class="stars" aria-label="4 out of 5 stars">
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star" aria-hidden="true">★</span>
+                  </span>
+                  <span class="participants">2–6 participants</span>
+                </div>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <a class="btn btn-primary btn-small" href="#contact">Book this room</a>
+              </div>
+            </li>
+
+            <li class="challenge-card">
+              <img
+                class="challenge-media"
+                src="assets/challanges.png"
+                alt=""
+                width="640"
+                height="400"
+              />
+              <div class="challenge-body">
+                <h3>Title of room (on-site)</h3>
+                <div class="challenge-meta">
+                  <span class="stars" aria-label="4 out of 5 stars">
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star star-filled" aria-hidden="true">★</span>
+                    <span class="star" aria-hidden="true">★</span>
+                  </span>
+                  <span class="participants">2–6 participants</span>
+                </div>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <a class="btn btn-primary btn-small" href="#contact">Book this room</a>
+              </div>
+            </li>
+          </ul>
+
+          <div class="challenges-actions cta-pair" id="play-onsite">
+            <a class="btn btn-primary cta-online" href="#play-online">Online challenges</a>
+            <a class="btn btn-secondary cta-onsite" href="#play-onsite">On-site challenges</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="story" id="story" aria-labelledby="story-heading">
+        <div class="container story-inner">
+          <h2 id="story-heading" class="visually-hidden">The story</h2>
+          <p>
+            Quodsi haberent magnalia inter potenti vires, ridiculus mus. Cum
+            sociis natoque penatibus et magnis dis parturient montes, nascetur
+            ridiculus mus. Nulla vitae elit libero, a pharetra augue. Donec
+            ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula
+            porta felis euismod semper.
+          </p>
+          <a class="btn btn-outline" href="#story">Read the full story</a>
+        </div>
+      </section>
+
+      <section class="feature-blocks" aria-label="Ways to play">
+        <article class="feature feature--image-left">
+          <img
+            class="feature-media"
+            src="assets/play-with-friends.png"
+            alt="Two colleagues collaborating at a computer in an office"
+            width="800"
+            height="560"
+          />
+          <div class="feature-content">
+            <h2>Play with your friends or build your team stronger at work</h2>
+            <p>
+              Praeterea, ex culpa non invenies unum aut non accusatis unum. Non
+              laudaor, tempor ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat.
+            </p>
+            <a class="btn btn-primary" href="#play-onsite">Book on-site today</a>
+          </div>
+        </article>
+
+        <article class="feature feature--image-right">
+          <div class="feature-content">
+            <h2>Play online or visit our venue for one of our 25 escape rooms</h2>
+            <p>
+              Praeterea, ex culpa non invenies unum aut non accusatis unum. Non
+              laudaor, tempor ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat.
+            </p>
+            <a class="btn btn-primary" href="#play-online">See all challenges</a>
+          </div>
+          <img
+            class="feature-media"
+            src="assets/play-online.png"
+            alt="Person working at a computer with code on the screen"
+            width="800"
+            height="560"
+          />
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="#top" aria-label="Hacker Escape Rooms home">
+            <img class="logo" src="assets/logo.png" alt="" width="72" height="40" />
+            <span class="brand-name">Hacker Escape Rooms</span>
+          </a>
+          <p>
+            Esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+          </p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Sitemap">
+          <h2>Site map</h2>
+          <ul>
+            <li><a href="#story">The Story</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#legal">Legal</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-nav" aria-label="Play options">
+          <h2 class="visually-hidden">Play options</h2>
+          <ul>
+            <li><a href="#play-online">Play online</a></li>
+            <li><a href="#play-onsite">Play on-site</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-nav" aria-label="Social media" id="legal">
+          <h2>Follow us on</h2>
+          <ul>
+            <li><a href="#" rel="noopener noreferrer">Facebook</a></li>
+            <li><a href="#" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="#" rel="noopener noreferrer">Twitter</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

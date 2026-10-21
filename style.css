@@ -1,4 +1,4 @@
-/* Brand tokens from style guide */
+/* colors from the brand guide */
 :root {
   --color-red: #e3170a;
   --color-navy: #011827;
@@ -57,6 +57,7 @@ figure {
   margin: 0;
 }
 
+/* hide text visually but keep it for screen readers */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -69,12 +70,13 @@ figure {
   border: 0;
 }
 
+/* keeps content from stretching too wide on big monitors */
 .container {
   width: min(100% - 2rem, var(--container-width));
   margin-inline: auto;
 }
 
-/* Temporary CSS image placeholders */
+/* leftover placeholder style, in case we need it again */
 .img-placeholder {
   background-color: var(--color-steel);
   background-image: repeating-linear-gradient(
@@ -86,7 +88,7 @@ figure {
   );
 }
 
-/* Buttons */
+/* button styles (red / blue / outline) */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -148,7 +150,7 @@ figure {
   white-space: nowrap;
 }
 
-/* Header */
+/* header — logo on top, nav centered underneath */
 .site-header {
   position: sticky;
   top: 0;
@@ -159,16 +161,22 @@ figure {
 
 .header-inner {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-block: 1rem;
   min-height: var(--header-height);
+}
+
+.primary-nav {
+  width: 100%;
 }
 
 .primary-nav ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  justify-content: center;
+  gap: 2.75rem; /* space between the nav links */
 }
 
 .primary-nav a {
@@ -206,7 +214,7 @@ figure {
   background: var(--color-white);
 }
 
-/* Hero */
+/* hero — buttons sit on top of the image on desktop */
 .hero {
   position: relative;
   background: var(--color-navy);
@@ -236,7 +244,7 @@ figure {
   flex: 1 1 200px;
 }
 
-/* Testimonials */
+/* customer quotes */
 .testimonials {
   padding: 3rem 0 2rem;
   background: var(--color-white);
@@ -277,7 +285,7 @@ figure {
   color: var(--color-text);
 }
 
-/* Challenges */
+/* popular rooms */
 .challenges {
   padding: 1rem 0 3.5rem;
   background: var(--color-white);
@@ -371,7 +379,7 @@ figure {
   min-width: 200px;
 }
 
-/* Story */
+/* dark "our story" band */
 .story {
   padding: 4rem 0;
   background: var(--color-navy);
@@ -389,7 +397,7 @@ figure {
   line-height: 1.7;
 }
 
-/* Feature blocks */
+/* alternating image / text sections */
 .feature {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -429,7 +437,7 @@ figure {
   margin-top: 0.5rem;
 }
 
-/* Footer */
+/* page footer */
 .site-footer {
   padding: 3rem 0;
   background: var(--color-navy);
@@ -466,7 +474,7 @@ figure {
   font-size: 0.9375rem;
 }
 
-/* Focus styles */
+/* keyboard focus outline */
 a:focus-visible,
 .btn:focus-visible,
 .nav-toggle:focus-visible {
@@ -474,11 +482,12 @@ a:focus-visible,
   outline-offset: 3px;
 }
 
+/* brand name wraps on phones only */
 .brand-break {
   display: none;
 }
 
-/* Responsive */
+/* ----- smaller screens ----- */
 @media (max-width: 960px) {
   .challenge-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -489,11 +498,13 @@ a:focus-visible,
   }
 }
 
+/* phone layout */
 @media (max-width: 768px) {
   .container {
     width: min(100% - 1.5rem, var(--container-width));
   }
 
+  /* hide desktop nav on mobile — links are in the footer */
   .nav-toggle {
     display: none;
   }
@@ -521,7 +532,7 @@ a:focus-visible,
     display: inline;
   }
 
-  /* Hero: image first, CTAs below (not overlaid) */
+  /* on phones the buttons go under the image instead of on top */
   .hero {
     background: var(--color-white);
   }
@@ -545,7 +556,7 @@ a:focus-visible,
     flex: none;
   }
 
-  /* Mobile CTA pattern: blue on-site button + online text link */
+  /* blue button on top, online as a plain link underneath */
   .cta-pair {
     display: flex;
     flex-direction: column;
@@ -578,7 +589,7 @@ a:focus-visible,
     text-decoration: underline;
   }
 
-  /* Single centered testimonial */
+  /* only show one review on small screens */
   .testimonials {
     padding: 2.5rem 0 2rem;
   }
@@ -620,7 +631,7 @@ a:focus-visible,
     font-size: 0.8125rem;
   }
 
-  /* Challenge cards as horizontal carousel */
+  /* swipe sideways through the room cards */
   .challenges {
     padding: 0.5rem 0 2.5rem;
     overflow: hidden;

@@ -195,23 +195,63 @@ figure {
 
 .nav-toggle {
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
+  position: relative;
+  flex-shrink: 0;
   width: 44px;
   height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
+  z-index: 110;
 }
 
 .nav-toggle-bar {
+  position: absolute;
+  left: 50%;
   display: block;
   width: 22px;
   height: 2px;
-  margin-inline: auto;
+  margin-left: -11px;
   background: var(--color-white);
+  border-radius: 1px;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    top 0.3s ease;
+}
+
+.nav-toggle-bar:nth-child(1) {
+  top: 14px;
+}
+
+.nav-toggle-bar:nth-child(2) {
+  top: 21px;
+}
+
+.nav-toggle-bar:nth-child(3) {
+  top: 28px;
+}
+
+/* hamburger bars morph into an X when the menu is open */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  top: 21px;
+  transform: rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  top: 21px;
+  transform: rotate(-45deg);
+}
+
+/* lock page scroll while the mobile menu covers the screen */
+body.nav-open {
+  overflow: hidden;
 }
 
 /* hero — buttons sit on top of the image on desktop */
@@ -504,18 +544,20 @@ a:focus-visible,
     width: min(100% - 1.5rem, var(--container-width));
   }
 
-  /* hide desktop nav on mobile — links are in the footer */
-  .nav-toggle {
-    display: none;
-  }
-
-  .primary-nav {
-    display: none;
-  }
-
   .header-inner {
-    justify-content: flex-start;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     min-height: 64px;
+    padding-block: 0.85rem;
+  }
+
+  .brand {
+    position: relative;
+    z-index: 1;
+    gap: 0.65rem;
   }
 
   .logo {
@@ -530,6 +572,139 @@ a:focus-visible,
 
   .brand-break {
     display: inline;
+  }
+
+  /* hamburger visible on small screens only */
+  .nav-toggle {
+    display: block;
+  }
+
+  /* keep the X sitting in the panel’s top-right when the menu is open */
+  body.nav-open .nav-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  /*
+    header creates a stacking context (sticky + z-index),
+    so lift it above the wash while the menu is open.
+    clear the header fill so the top gap shows the washed page
+    instead of blending into the navy menu panel
+  */
+  body.nav-open .site-header {
+    z-index: 110;
+    background: transparent;
+  }
+
+  body.nav-open .brand {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* soft white wash over the page so the edges look faded behind the menu */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 105;
+    background: rgba(255, 255, 255, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.55s ease,
+      visibility 0.55s ease;
+  }
+
+  body.nav-open::before {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /*
+    inset overlay menu — page peeks around the edges,
+    stays in the DOM so open/close can animate smoothly
+  */
+  .primary-nav {
+    position: fixed;
+    inset: 0.85rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    background: var(--color-navy);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.55s ease,
+      visibility 0.55s ease;
+  }
+
+  .primary-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .primary-nav ul {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4.50rem;
+  }
+
+  .primary-nav li {
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  .primary-nav.is-open li {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .primary-nav.is-open li:nth-child(1) {
+    transition-delay: 0.12s;
+  }
+
+  .primary-nav.is-open li:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+
+  .primary-nav.is-open li:nth-child(3) {
+    transition-delay: 0.28s;
+  }
+
+  .primary-nav.is-open li:nth-child(4) {
+    transition-delay: 0.36s;
+  }
+
+  .primary-nav a {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-white);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .primary-nav,
+    .primary-nav li,
+    .nav-toggle-bar,
+    body::before {
+      transition: none;
+    }
+
+    .primary-nav.is-open li {
+      transition-delay: 0s;
+    }
   }
 
   /* on phones the buttons go under the image instead of on top */

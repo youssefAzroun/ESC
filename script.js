@@ -2,6 +2,7 @@
 (function () {
   const navToggle = document.querySelector(".nav-toggle");
   const primaryNav = document.querySelector(".primary-nav");
+  const desktopQuery = window.matchMedia("(min-width: 769px)");
 
   // nothing to do if the button isn't on the page
   if (!navToggle || !primaryNav) {
@@ -11,12 +12,17 @@
   function setNavOpen(isOpen) {
     primaryNav.classList.toggle("is-open", isOpen);
     navToggle.setAttribute("aria-expanded", String(isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    document.body.classList.toggle("nav-open", isOpen);
   }
 
-  // hamburger click
+  function isNavOpen() {
+    return navToggle.getAttribute("aria-expanded") === "true";
+  }
+
+  // hamburger / X click
   navToggle.addEventListener("click", function () {
-    const isOpen = navToggle.getAttribute("aria-expanded") === "true";
-    setNavOpen(!isOpen);
+    setNavOpen(!isNavOpen());
   });
 
   // close after picking a link
@@ -28,14 +34,15 @@
 
   // close with Escape
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
+    if (event.key === "Escape" && isNavOpen()) {
       setNavOpen(false);
+      navToggle.focus();
     }
   });
 
   // if they resize back up to desktop, shut the menu
-  window.addEventListener("resize", function () {
-    if (window.matchMedia("(min-width: 769px)").matches) {
+  desktopQuery.addEventListener("change", function (event) {
+    if (event.matches) {
       setNavOpen(false);
     }
   });

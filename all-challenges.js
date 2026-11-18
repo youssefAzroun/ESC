@@ -1,0 +1,97 @@
+// 1.5: Show all challenges from the API on this page
+
+(async function () {
+  const statusEl = document.getElementById("all-challenges-status");
+  const listEl = document.getElementById("all-challenges-list");
+
+  function showError(message) {
+    statusEl.textContent = message;
+    statusEl.classList.add("status--error");
+  }
+
+  // Stars only for this page list
+  function createStars(rating) {
+    const stars = document.createElement("span");
+    stars.className = "stars";
+    const value = Number(rating) || 0;
+    const filled = Math.floor(value);
+    const hasHalf = value - filled >= 0.5;
+    stars.setAttribute("aria-label", `${value} out of 5 stars`);
+
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement("span");
+      star.className = "star";
+      star.setAttribute("aria-hidden", "true");
+      star.textContent = "★";
+      if (i <= filled) {
+        star.classList.add("star-filled");
+      } else if (i === filled + 1 && hasHalf) {
+        star.classList.add("star-half");
+      }
+      stars.appendChild(star);
+    }
+
+    return stars;
+  }
+
+  function createChallengeItem(challenge) {
+    const li = document.createElement("li");
+    li.className = "all-challenge-item";
+
+    if (challenge.image) {
+      const image = document.createElement("img");
+      image.className = "all-challenge-image";
+      image.src = challenge.image;
+      image.alt = "";
+      li.appendChild(image);
+    }
+
+    const body = document.createElement("div");
+    body.className = "all-challenge-body";
+
+    const title = document.createElement("h2");
+    title.textContent = challenge.title || "Untitled challenge";
+
+    const meta = document.createElement("div");
+    meta.className = "all-challenge-meta";
+    meta.appendChild(createStars(challenge.rating));
+
+    const participants = document.createElement("span");
+    participants.className = "participants";
+    const type = challenge.type || "unknown";
+    const min = challenge.minParticipants ?? "?";
+    const max = challenge.maxParticipants ?? "?";
+    participants.textContent = `${type} · ${min}–${max} participants`;
+    meta.appendChild(participants);
+
+    const description = document.createElement("p");
+    description.textContent = challenge.description || "";
+
+    body.append(title, meta, description);
+    li.appendChild(body);
+    return li;
+  }
+
+  try {
+    const data = await getChallenges();
+    const challenges = Array.isArray(data.challenges) ? data.challenges : null;
+
+    if (!challenges) {
+      showError("Could not load challenges: unexpected API response.");
+      return;
+    }
+
+    if (challenges.length === 0) {
+      statusEl.textContent = "No challenges found.";
+      return;
+    }
+
+    statusEl.textContent = `${challenges.length} challenges`;
+    challenges.forEach(function (challenge) {
+      listEl.appendChild(createChallengeItem(challenge));
+    });
+  } catch (error) {
+    console.error(error);
+    showError("Failed to load challenges. Please try again later.");
+  }
+})();

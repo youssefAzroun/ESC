@@ -5,9 +5,10 @@
   min-height: 50vh;
 }
 
-.all-challenges-main h1 {
+.all-challenges-main > h1 {
   margin: 0 0 1rem;
   font-size: 1.75rem;
+  text-align: center;
 }
 
 .status {
@@ -69,4 +70,53 @@
 
 .all-challenge-item p {
   margin: 0;
+}
+
+.filter-button {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-button[hidden] {
+  display: none;
+}
+
+.filter-container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #cbd5e1;
+  background-color: #fff;
+  color: #334155;
+}
+
+.filter-container[hidden] {
+  display: none;
+}
+
+.filter-container-title {
+  font-size: 0.95rem;
+}
+
+.filter-close-button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #263445;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
 }

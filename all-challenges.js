@@ -95,3 +95,20 @@
     showError("Failed to load challenges. Please try again later.");
   }
 })();
+
+// 2.1 Adding a filter button and a filter container to the all-challenges.html file. The filter button will be used to toggle the visibility of the filter container.
+const filterButton = document.querySelector(".filter-button");
+const filterContainer = document.querySelector(".filter-container");
+const filterCloseButton = document.querySelector(".filter-close-button");
+
+filterButton.addEventListener("click", function () {
+  filterContainer.hidden = false;
+  filterButton.hidden = true;
+  filterButton.setAttribute("aria-expanded", "true");
+});
+
+filterCloseButton.addEventListener("click", function () {
+  filterContainer.hidden = true;
+  filterButton.hidden = false;
+  filterButton.setAttribute("aria-expanded", "false");
+});

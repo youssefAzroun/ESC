@@ -46,6 +46,22 @@
     </header>
 
     <main id="top" class="all-challenges-main">
+      <h1>Our challenges</h1>
+      <button
+        class="filter-button"
+        type="button"
+        aria-expanded="false"
+        aria-controls="filter-container"
+      >
+        Filter challenges
+      </button>
+      <section id="filter-container" class="filter-container" aria-label="Challenge filters" hidden>
+        <span class="filter-container-title">Filter challenges</span>
+        <button class="filter-close-button" type="button" aria-label="Close filters">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </section>
+
       <div class="container">
         <h1>All challenges</h1>
         <p id="all-challenges-status" class="status" aria-live="polite">

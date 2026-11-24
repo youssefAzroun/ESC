@@ -105,6 +105,24 @@
       <section class="challenges" id="play-online" aria-labelledby="challenges-heading">
         <div class="container">
           <h2 id="challenges-heading">Popular challenges right now</h2>
+          
+
+          <div class="filter-section">
+            <h3>Filter by type</h3>
+            <label>
+              <input type="checkbox" id="onlineFilter">
+              Online
+            </label>
+            <label>
+              <input type="checkbox" id="onSiteFilter">
+              On-site
+            </label>
+          <h3>Minimum rating</h3>
+          <div id="minRating" class="rating-stars"></div>
+          <h3>Maximum rating</h3>
+          <div id="maxRating" class="rating-stars"></div>
+        </div>
+
 
           <ul class="challenge-grid">
             <li class="challenge-card">
@@ -199,6 +217,23 @@
           </div>
         </div>
       </section>
+
+      
+      <section class="booking" id="booking">
+        <div class="container">
+
+          <div class="booking-step" id="booking-date-step">
+            <h2>Book a challenge</h2>
+            <h3>Choose a date</h3>
+            <label for="bookingDate">Select date:</label>
+
+            <input type="date" id="bookingDate" required>
+            <button type="button" id="continueBooking">Continue</button>
+            <p id="bookingError"></p>
+          </div>
+        </div>
+      </section>
+
 
       <!-- short about section -->
       <section class="story" id="story" aria-labelledby="story-heading">
@@ -299,5 +334,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="challenges.js"></script>
   </body>
 </html>

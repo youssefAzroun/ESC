@@ -67,7 +67,12 @@
     const description = document.createElement("p");
     description.textContent = challenge.description || "";
 
-    body.append(title, meta, description);
+    const bookLink = document.createElement("a");
+    bookLink.className = "btn btn-primary btn-small";
+    bookLink.href = "#contact";
+    bookLink.textContent = "Book this room";
+
+    body.append(title, meta, description, bookLink);
     li.appendChild(body);
     return li;
   }

@@ -522,6 +522,40 @@ a:focus-visible,
   outline-offset: 3px;
 }
 
+.booking-popup {
+  width: min(90vw, 420px);
+  border: 0;
+  border-radius: 8px;
+  padding: 2rem;
+  color: var(--color-navy);
+  box-shadow: 0 8px 32px rgba(1, 24, 39, 0.25);
+}
+
+.booking-popup::backdrop {
+  background: rgba(1, 24, 39, 0.65);
+}
+
+.booking-popup h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+}
+
+.booking-popup-room {
+  margin: 0;
+}
+
+.booking-popup-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-navy);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
 /* brand name wraps on phones only */
 .brand-break {
   display: none;

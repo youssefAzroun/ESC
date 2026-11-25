@@ -91,15 +91,42 @@
       return;
     }
 
-    statusEl.textContent = `${challenges.length} challenges`;
-    challenges.forEach(function (challenge) {
+    const searchInput = document.getElementById("challenge-search");
+
+    function renderChallenges(items) {
+      listEl.innerHTML = "";
+
+      if (items.length === 0) {
+        statusEl.textContent = "No matching challenges";
+        return;
+      }
+
+    statusEl.textContent = `${items.length} challenges`;
+    items.forEach(function (challenge) {
       listEl.appendChild(createChallengeItem(challenge));
     });
+  }
+
+  renderChallenges(challenges);
+ 
+  if (searchInput) {
+    searchInput.addEventListener("input", function (event) {
+      const query = event.target.value.trim().toLowerCase();
+      const filtered = challenges.filter(function (challenge) {
+        return (
+          challenge.title.toLowerCase().includes(query) ||
+          challenge.description.toLowerCase().includes(query)
+        );
+      });
+      renderChallenges(filtered);
+    });
+  }
   } catch (error) {
     console.error(error);
     showError("Failed to load challenges. Please try again later.");
   }
 })();
+
 
 // 2.1 Adding a filter button and a filter container to the all-challenges.html file. The filter button will be used to toggle the visibility of the filter container.
 const filterButton = document.querySelector(".filter-button");

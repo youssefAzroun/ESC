@@ -47,3 +47,32 @@
     }
   });
 })();
+
+// Loading API from https://lernia-sjj-assignments.vercel.app/api/challenges
+const API_URL = 'https://lernia-sjj-assignments.vercel.app/api/challenges';
+
+async function loadChallenges() 
+{
+    const response = await fetch(API_URL);
+
+    if (!response.ok) 
+        {
+        throw new Error(`Failed to load challenges: ${response.status} ${response.statusText}`);
+        }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data.challenges)) 
+        {
+        throw new Error('The API response does not contain a challenges array.');
+        }
+
+    for (const challenge of data.challenges) {
+        console.log(challenge);
+    }
+}
+
+loadChallenges().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+});

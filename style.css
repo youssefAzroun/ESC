@@ -360,6 +360,24 @@ body.nav-open {
   object-position: center;
 }
 
+/* 1.3 online / on-site icon in the corner of the card */
+.challenge-card {
+  position: relative;
+}
+
+.challenge-type-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 4px;
+  background: rgba(1, 24, 39, 0.55);
+  color: var(--color-white);
+}
+
 .challenge-body {
   display: flex;
   flex: 1;
@@ -390,6 +408,14 @@ body.nav-open {
 
 .star-filled {
   color: var(--color-red);
+}
+
+/* 1.3 half star for ratings like 3.5 */
+.star-half {
+  background: linear-gradient(90deg, var(--color-red) 50%, var(--color-gray) 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .participants {
@@ -958,5 +984,3 @@ a:focus-visible,
     margin-bottom: 0.5rem;
   }
 }
-
-

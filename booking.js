@@ -75,3 +75,46 @@ new MutationObserver(attachBookRoomListeners).observe(document.body, {
     childList: true,
     subtree: true,
 });
+
+function populateTimeSelect(availableTimes = [], selectEl = document.getElementById("booking-time")) {
+    if (!selectEl) return;
+    selectEl.innerHTML = "";
+
+if (!Array.isArray(availableTimes) || availableTimes.length === 0) {
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.textContent = "No available times";
+    selectEl.appendChild(emptyOption);
+    selectEl.disabled = true;
+    return;
+}
+
+selectEl.disabled = false;
+
+availableTimes.forEach(function (timeSlot) {
+    const option = document.createElement("option");
+    option.value = timeSlot;
+    option.textContent = timeSlot;
+    selectEl.appendChild(option);
+});
+}
+
+function populateParticipantsSelect(minParticipants, maxParticipants, selectEl = document.getElementById("booking-participants")) {
+    if (!selectEl) return;
+
+    selectEl.innerHTML = "";
+
+    const min = Number(minParticipants);
+    const max = Number(maxParticipants);
+
+    if (Number.isNaN(min) || Number.isNaN(max) || min > max) { 
+        return
+    }
+
+    for (let count = min; count <= max; count++) {
+        const option = document.createElement("option");
+        option.value = String(count);
+        option.textContent = count + (count === 1 ? " participant" : " participants");
+        selectEl.appendChild(option);
+  }
+}

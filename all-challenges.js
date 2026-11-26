@@ -121,6 +121,12 @@
       renderChallenges(filtered);
     });
   }
+
+  // 2.3: tag buttons, shows the challenges that have all active tags
+  // (2.5 combines this with the search)
+  buildTagFilter(challenges, document.getElementById("filter-tags"), function () {
+    renderChallenges(challenges.filter(matchesTags));
+  });
   } catch (error) {
     console.error(error);
     showError("Failed to load challenges. Please try again later.");

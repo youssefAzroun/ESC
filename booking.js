@@ -1,3 +1,5 @@
+const BOOKING_API = "https://lernia-sjj-assignments.vercel.app/api/booking";
+
 function attachBookRoomListeners() {
     document.querySelectorAll("a").forEach(function (link) {
     if (link.textContent.trim() !== "Book this room") {
@@ -20,74 +22,258 @@ function attachBookRoomListeners() {
         ? roomHeading.textContent.trim()
         : "this room";
 
-        openBookingPopup(roomName);
+        const challenge = {
+            id: card ? Number(card.dataset.challengeId) : NaN,
+            title: roomName,
+            minParticipants: card ? Number(card.dataset.minParticipants) : 1,
+            maxParticipants: card ? Number(card.dataset.maxParticipants) : 1,
+        };
+
+        openBookingPopup(challenge);
     });
     });
 }
 
 let bookingPopup;
+let currentBooking = null;
 
-function openBookingPopup(roomName) {
+function closeBookingPopup() {
+    if (!bookingPopup) return;
+    if (typeof bookingPopup.close === "function") {
+        bookingPopup.close();
+    } else {
+        bookingPopup.removeAttribute("open");
+    }
+}
+
+function setBookingStep(step) {
+    if (!bookingPopup) return;
+    bookingPopup.querySelectorAll("[data-booking-step]").forEach(function (panel) {
+        panel.hidden = panel.dataset.bookingStep !== String(step);
+    });
+}
+
+function openBookingPopup(challenge) {
+    currentBooking = {
+        id: challenge.id,
+        title: challenge.title || "this room",
+        minParticipants: challenge.minParticipants,
+        maxParticipants: challenge.maxParticipants,
+        date: "",
+    };
+
     if (!bookingPopup) {
     bookingPopup = document.createElement("dialog");
     bookingPopup.className = "booking-popup";
     bookingPopup.innerHTML =
         '<button class="booking-popup-close" type="button" aria-label="Close booking popup">&times;</button>' +
-        "<h2>Booking this Room</h2>" +
-        '<p class="booking-popup-room"></p>';
+        '<div data-booking-step="1" class="booking-step">' +
+          '<h2 class="booking-step-title"></h2>' +
+          '<form class="booking-form booking-form-step1">' +
+            '<div class="contact-field">' +
+              '<label for="booking-date">What date would you like to come?</label>' +
+              '<input id="booking-date" name="date" type="date" required />' +
+            '</div>' +
+            '<p class="field-error" id="booking-date-error" hidden></p>' +
+            '<button class="btn btn-primary" type="submit">Search available times</button>' +
+          '</form>' +
+        '</div>' +
+        '<div data-booking-step="2" class="booking-step" hidden>' +
+          '<h2 class="booking-step-title"></h2>' +
+          '<form class="booking-form booking-form-step2" novalidate></form>' +
+        '</div>' +
+        '<div data-booking-step="3" class="booking-step booking-step-thanks" hidden>' +
+          '<h2>Thank you!</h2>' +
+          '<button class="booking-back-link" type="button">Back to challenges</button>' +
+        '</div>';
     document.body.appendChild(bookingPopup);
 
-    // 3.3: name + e-mail, checked on submit
-    const bookingForm = document.createElement("form");
-    bookingForm.className = "booking-form";
-    bookingForm.noValidate = true;
+    // step 2 fields
+    const step2Form = bookingPopup.querySelector(".booking-form-step2");
+    const timeField = document.createElement("div");
+    timeField.className = "contact-field";
+    timeField.innerHTML =
+        '<label for="booking-time">What time?</label>' +
+        '<select id="booking-time" name="time" required></select>';
+
+    const participantsField = document.createElement("div");
+    participantsField.className = "contact-field";
+    participantsField.innerHTML =
+        '<label for="booking-participants">How many participants?</label>' +
+        '<select id="booking-participants" name="participants" required></select>';
 
     const submitButton = document.createElement("button");
     submitButton.className = "btn btn-primary";
     submitButton.type = "submit";
     submitButton.textContent = "Submit booking";
 
-    bookingForm.append(createContactFields(), submitButton);
-    bookingPopup.appendChild(bookingForm);
+    step2Form.append(
+        createContactFields(),
+        timeField,
+        participantsField,
+        submitButton
+    );
 
-    bookingForm.addEventListener("submit", function (event) {
+    // step 1: pick a date and load free times
+    bookingPopup.querySelector(".booking-form-step1").addEventListener("submit", async function (event) {
         event.preventDefault();
-        if (!validateContactDetails(bookingForm)) {
+        const dateInput = bookingPopup.querySelector("#booking-date");
+        const dateError = bookingPopup.querySelector("#booking-date-error");
+        const date = dateInput.value;
+
+        if (!date) {
+            dateError.hidden = false;
+            dateError.textContent = "Please choose a date.";
             return;
         }
-        // 3.5: send the booking to the API here
+
+        dateError.hidden = true;
+        dateError.textContent = "";
+
+        const searchButton = event.submitter || bookingPopup.querySelector(".booking-form-step1 button[type='submit']");
+        searchButton.disabled = true;
+        searchButton.textContent = "Searching…";
+
+        try {
+            const slots = await fetchAvailableTimes(currentBooking.id, date);
+            currentBooking.date = date;
+            populateTimeSelect(slots, bookingPopup.querySelector("#booking-time"));
+            populateParticipantsSelect(
+                currentBooking.minParticipants,
+                currentBooking.maxParticipants,
+                bookingPopup.querySelector("#booking-participants")
+            );
+            updateBookingTitles();
+            setBookingStep(2);
+        } catch (error) {
+            console.error(error);
+            dateError.hidden = false;
+            dateError.textContent = "Could not load available times. Please try again.";
+        } finally {
+            searchButton.disabled = false;
+            searchButton.textContent = "Search available times";
+        }
+    });
+
+    // step 2 submit → post booking, then thank you
+    step2Form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        if (!validateContactDetails(step2Form)) {
+            return;
+        }
+
+        const timeSelect = step2Form.querySelector("#booking-time");
+        const participantsSelect = step2Form.querySelector("#booking-participants");
+
+        if (!timeSelect.value) {
+            return;
+        }
+
+        const payload = {
+            challenge: currentBooking.id,
+            name: step2Form.elements.name.value.trim(),
+            email: step2Form.elements.email.value.trim(),
+            date: currentBooking.date,
+            time: timeSelect.value,
+            participants: Number(participantsSelect.value),
+        };
+
+        const submitBtn = step2Form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting…";
+
+        try {
+            await submitBooking(payload);
+            setBookingStep(3);
+        } catch (error) {
+            console.error(error);
+            alert("Booking failed. Please try again.");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit booking";
+        }
     });
 
     const closeButton = bookingPopup.querySelector(".booking-popup-close");
-    closeButton.addEventListener("click", function () {
-        if (typeof bookingPopup.close === "function") {
-        bookingPopup.close();
-        } 
-        else {
-        bookingPopup.removeAttribute("open");
-        }
-    });
+    closeButton.addEventListener("click", closeBookingPopup);
+
+    bookingPopup.querySelector(".booking-back-link").addEventListener("click", closeBookingPopup);
 
     bookingPopup.addEventListener("click", function (event) {
         if (event.target === bookingPopup) {
-            if (typeof bookingPopup.close === "function") {
-                bookingPopup.close();
-            } 
-            else {
-                bookingPopup.removeAttribute("open");
-                }
+            closeBookingPopup();
         }
     });
     }
 
-    bookingPopup.querySelector(".booking-popup-room").textContent =
-    "Book " + roomName;
+    // always start over when opening again
+    const dateInput = bookingPopup.querySelector("#booking-date");
+    if (dateInput) {
+        dateInput.value = "";
+    }
+    const dateError = bookingPopup.querySelector("#booking-date-error");
+    if (dateError) {
+        dateError.hidden = true;
+        dateError.textContent = "";
+    }
+    const step2FormReset = bookingPopup.querySelector(".booking-form-step2");
+    if (step2FormReset) {
+        step2FormReset.reset();
+    }
+
+    updateBookingTitles();
+    setBookingStep(1);
 
     if (typeof bookingPopup.showModal === "function") {
     bookingPopup.showModal();
     } else {
     bookingPopup.setAttribute("open", "");
     }
+}
+
+function updateBookingTitles() {
+    if (!bookingPopup || !currentBooking) return;
+    const title = currentBooking.title.replace(/\s*\((online|on-site)\)\s*$/i, "");
+    bookingPopup.querySelectorAll(".booking-step-title").forEach(function (heading, index) {
+        heading.textContent = "Book room '" + title + "' (step " + (index + 1) + ")";
+    });
+}
+
+async function fetchAvailableTimes(challengeId, date) {
+    const url =
+        BOOKING_API +
+        "/available-times?date=" +
+        encodeURIComponent(date) +
+        "&challenge=" +
+        encodeURIComponent(challengeId);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error("Failed to fetch available times");
+    }
+
+    const data = await response.json();
+    return Array.isArray(data.slots) ? data.slots : [];
+}
+
+async function submitBooking(payload) {
+    const response = await fetch(BOOKING_API + "/reservations", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to create reservation");
+    }
+
+    const data = await response.json();
+    if (data.status !== "ok") {
+        throw new Error("Booking was not accepted");
+    }
+    return data;
 }
 
 attachBookRoomListeners();

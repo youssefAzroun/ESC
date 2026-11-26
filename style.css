@@ -345,10 +345,18 @@ body.nav-open {
 }
 
 .challenge-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   border: 1px solid #e5e5e5;
   background: var(--color-white);
+  overflow: hidden;
+}
+
+/* image up top, stars on the bottom left of it */
+.challenge-media-wrap {
+  position: relative;
+  overflow: hidden;
 }
 
 .challenge-media {
@@ -358,11 +366,6 @@ body.nav-open {
   height: auto;
   object-fit: cover;
   object-position: center;
-}
-
-/* 1.3 online / on-site icon in the corner of the card */
-.challenge-card {
-  position: relative;
 }
 
 .challenge-type-icon {
@@ -378,59 +381,70 @@ body.nav-open {
   color: var(--color-white);
 }
 
+.challenge-media-wrap .stars {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.55rem;
+  z-index: 1;
+}
+
 .challenge-body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
+  gap: 0.45rem;
+  padding: 1rem 1rem 1.1rem;
 }
 
 .challenge-body h3 {
+  margin: 0;
   font-size: 1.125rem;
   font-weight: 700;
-}
-
-.challenge-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.875rem;
+  line-height: 1.3;
 }
 
 .stars {
   display: inline-flex;
-  gap: 2px;
+  gap: 3px;
   color: var(--color-gray);
-  letter-spacing: 1px;
+  letter-spacing: 0;
+  font-size: 1.45rem;
+  line-height: 1;
+  font-weight: 700;
+  -webkit-text-stroke: 0.5px currentColor;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .star-filled {
-  color: var(--color-red);
+  color: #8b7cf6;
 }
 
-/* 1.3 half star for ratings like 3.5 */
+/* half filled star */
 .star-half {
-  background: linear-gradient(90deg, var(--color-red) 50%, var(--color-gray) 50%);
+  background: linear-gradient(90deg, #8b7cf6 50%, var(--color-gray) 50%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .participants {
-  color: var(--color-text);
+  margin: 0;
+  color: #555;
+  font-size: 0.875rem;
 }
 
-.challenge-body p {
+.challenge-description {
   flex: 1;
+  margin: 0.15rem 0 0;
   font-size: 0.9375rem;
+  line-height: 1.45;
   color: #444;
 }
 
 .challenge-body .btn {
   align-self: flex-end;
-  margin-top: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
 }
 
 .challenges-actions {
@@ -549,21 +563,48 @@ a:focus-visible,
 }
 
 .booking-popup {
-  width: min(90vw, 420px);
+  box-sizing: border-box;
+  width: min(94vw, 560px);
+  max-width: 560px;
   border: 0;
-  border-radius: 8px;
-  padding: 2rem;
+  border-radius: 12px;
+  padding: 2.25rem 2.25rem 2rem;
   color: var(--color-navy);
-  box-shadow: 0 8px 32px rgba(1, 24, 39, 0.25);
+  box-shadow: 0 18px 48px rgba(1, 24, 39, 0.28);
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  transition:
+    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.booking-popup[open] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .booking-popup::backdrop {
   background: rgba(1, 24, 39, 0.65);
+  animation: booking-backdrop-in 0.28s ease both;
 }
 
-.booking-popup h2 {
-  margin: 0 0 0.75rem;
-  font-size: 1.5rem;
+@keyframes booking-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.booking-popup h2,
+.booking-step-title {
+  margin: 0 2rem 1rem 0;
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .booking-popup-room {
@@ -572,51 +613,120 @@ a:focus-visible,
 
 .booking-popup-close {
   position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
+  top: 0.55rem;
+  right: 0.7rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border: 0;
+  border-radius: 50%;
   background: transparent;
   color: var(--color-navy);
   font-size: 1.75rem;
   line-height: 1;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* 3.3 name + e-mail in the booking form */
+.booking-popup-close:hover,
+.booking-popup-close:focus-visible {
+  background: #f1f5f9;
+  transform: rotate(90deg);
+}
+
+.booking-step {
+  animation: booking-step-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes booking-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .booking-popup,
+  .booking-popup::backdrop,
+  .booking-step,
+  .booking-popup-close {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .booking-popup {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* booking form fields */
 .booking-form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 .contact-field {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
+  width: 100%;
 }
 
 .contact-field label {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
-.contact-field input {
+.contact-field input,
+.contact-field select {
+  box-sizing: border-box;
   width: 100%;
-  max-width: 18rem;
-  min-height: 44px;
-  padding: 0.6rem 0.75rem;
+  max-width: none;
+  min-height: 48px;
+  padding: 0.7rem 0.85rem;
   border: 2px solid var(--color-gray);
   font: inherit;
+  background: var(--color-white);
 }
 
-.contact-field input:focus {
+.contact-field input:focus,
+.contact-field select:focus {
   border-color: var(--color-steel);
   outline: none;
 }
 
 .contact-field input[aria-invalid="true"] {
   border-color: #a40000;
+}
+
+.booking-step-thanks {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+}
+
+.booking-step-thanks h2 {
+  margin-bottom: 1.5rem;
+}
+
+.booking-back-link {
+  border: 0;
+  background: transparent;
+  color: var(--color-steel);
+  font: inherit;
+  font-size: 1rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.booking-form .field-error[hidden] {
+  display: none;
 }
 
 .field-error {

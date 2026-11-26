@@ -18,14 +18,14 @@ async function getChallenges() {
 
 
 
-
 function createRatingWidget(elementId, callback) {
     const container = document.getElementById(elementId);
+    if (!container) return;
 
     for (let i = 1; i <= 5; i++) {
         const star = document.createElement("img");
 
-        star.src = "assets/star-empty.svg";
+        star.src = "assets/empty-star.svg";
         star.alt = `${i} stars`;
         star.style.cursor = "pointer";
 
@@ -44,53 +44,64 @@ function updateStars(container, rating) {
 
     stars.forEach((star, index) => {
         if (index < rating) {
-            star.src = "assets/star-filled.svg";
+            star.src = "assets/fullstar.svg";
         } else {
-            star.src = "assets/star-empty.svg";
+            star.src = "assets/empty-star.svg";
         }
     });
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
+    const minEl = document.getElementById("minRating");
+    const maxEl = document.getElementById("maxRating");
+    const onlineEl = document.getElementById("onlineFilter");
+    const onSiteEl = document.getElementById("onSiteFilter");
 
-   
+    // these elements are only on the all challenges page
+    if (!minEl || !maxEl || !onlineEl || !onSiteEl) {
+        return;
+    }
+
     createRatingWidget("minRating", (rating) => {
         minRating = rating;
         filterChallenges();
     });
 
-  
     createRatingWidget("maxRating", (rating) => {
         maxRating = rating;
         filterChallenges();
     });
 
-   
-    document.getElementById("onlineFilter")
-        .addEventListener("change", filterChallenges);
+    // default max is 5 so fill those stars
+    updateStars(maxEl, maxRating);
 
-    document.getElementById("onSiteFilter")
-        .addEventListener("change", filterChallenges);
-
- 
-    try {
-        challenges = await getChallenges();
-    } catch (error) {
-        console.error(error);
-    }
+    onlineEl.addEventListener("change", filterChallenges);
+    onSiteEl.addEventListener("change", filterChallenges);
 });
 
 
 
 function filterChallenges() {
-    const online = document.getElementById("onlineFilter").checked;
-    const onSite = document.getElementById("onSiteFilter").checked;
+    // if the combined filter exists, use that instead
+    if (typeof applyAllFilters === "function") {
+        applyAllFilters();
+        return;
+    }
+
+    const onlineEl = document.getElementById("onlineFilter");
+    const onSiteEl = document.getElementById("onSiteFilter");
+    if (!onlineEl || !onSiteEl || !Array.isArray(challenges)) {
+        return;
+    }
+
+    const online = onlineEl.checked;
+    const onSite = onSiteEl.checked;
 
     const filteredChallenges = challenges.filter(challenge => {
         const matchesType =
         (!online && !onSite) ||
         (online && challenge.type === "online") ||
-        (onSite && challenge.type === "on-site");
+        (onSite && challenge.type === "onsite");
 
         const matchesRating =
         challenge.rating >= minRating &&
@@ -99,5 +110,7 @@ function filterChallenges() {
         return matchesType && matchesRating;
     });
 
-    displayChallenges(filteredChallenges);
+    if (typeof displayChallenges === "function") {
+        displayChallenges(filteredChallenges);
+    }
 }

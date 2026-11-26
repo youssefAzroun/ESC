@@ -46,40 +46,69 @@
     </header>
 
     <main id="top" class="all-challenges-main">
-      <h1>Our challenges</h1>
-      <button
-        class="filter-button"
-        type="button"
-        aria-expanded="false"
-        aria-controls="filter-container"
-      >
-        Filter challenges
-      </button>
-      <section id="filter-container" class="filter-container" aria-label="Challenge filters" hidden>
-        <label for="challenge-search" class="visually-hidden">Or type to search for keyword</label>
-        <input
-        id="challenge-search"
-        class="filter-search-input"
-        type="search"
-        placeholder="Start typing to filter"
-      />
-        <button class="filter-close-button" type="button" aria-label="Close filters">
-          <span aria-hidden="true">x</span>
+      <div class="container">
+        <h1>Our challenges</h1>
+
+        <button
+          class="filter-button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="filter-container"
+        >
+          Filter challenges
         </button>
 
-        <!-- 2.3 tag filter -->
-        <fieldset class="filter-tags">
-          <legend>By tags</legend>
-          <div id="filter-tags" class="tag-list"></div>
-        </fieldset>
-      </section>
+        <section id="filter-container" class="filter-container" aria-label="Challenge filters" hidden aria-hidden="true">
+          <div class="filter-container-header">
+            <h2 class="filter-container-title">Filter challenges</h2>
+            <button class="filter-close-button" type="button" aria-label="Close filters">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
 
-      <div class="container">
-        <h1>All challenges</h1>
+          <div class="filter-columns">
+            <fieldset class="filter-type">
+              <legend>By type</legend>
+              <label class="filter-check">
+                <input id="onlineFilter" type="checkbox" checked />
+                Include online challenges
+              </label>
+              <label class="filter-check">
+                <input id="onSiteFilter" type="checkbox" checked />
+                Include on-site challenges
+              </label>
+            </fieldset>
+
+            <fieldset class="filter-rating">
+              <legend>By rating</legend>
+              <div class="rating-range" role="group" aria-label="Rating range">
+                <div id="minRating" class="rating-widget" aria-label="Minimum rating"></div>
+                <span class="rating-to">to</span>
+                <div id="maxRating" class="rating-widget" aria-label="Maximum rating"></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="filter-tags">
+              <legend>By tags</legend>
+              <div id="filter-tags" class="tag-list"></div>
+            </fieldset>
+          </div>
+
+          <div class="filter-search">
+            <label for="challenge-search">Or type to search for keyword</label>
+            <input
+              id="challenge-search"
+              class="filter-search-input"
+              type="search"
+              placeholder="Start typing to filter"
+            />
+          </div>
+        </section>
+
         <p id="all-challenges-status" class="status" aria-live="polite">
           Loading challenges…
         </p>
-        <ul id="all-challenges-list" class="all-challenges-list"></ul>
+        <ul id="all-challenges-list" class="challenge-grid"></ul>
       </div>
     </main>
 

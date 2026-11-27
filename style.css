@@ -706,23 +706,58 @@ a:focus-visible,
   border-color: #a40000;
 }
 
-.booking-step-thanks {
-  text-align: center;
-  padding: 1rem 0 0.5rem;
+.booking-step[hidden] {
+  display: none !important;
 }
 
-.booking-step-thanks h2 {
-  margin-bottom: 1.5rem;
+.booking-step-thanks:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 1rem 1.5rem;
+  text-align: center;
+}
+
+.booking-thanks-icon {
+  display: grid;
+  place-items: center;
+}
+
+.booking-thanks-title {
+  margin: 0 !important;
+  font-size: 2rem !important;
+  font-weight: 700;
+  color: var(--color-navy);
+  line-height: 1.2;
+}
+
+.booking-thanks-text {
+  margin: 0;
+  max-width: 20rem;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .booking-back-link {
+  margin-top: 0.5rem;
   border: 0;
   background: transparent;
-  color: var(--color-steel);
+  color: #6b46c1;
   font: inherit;
   font-size: 1rem;
+  font-weight: 700;
   text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
+}
+
+.booking-back-link:hover,
+.booking-back-link:focus-visible {
+  color: #553c9a;
+  outline: none;
 }
 
 .booking-form .field-error[hidden] {

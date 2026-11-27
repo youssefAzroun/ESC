@@ -471,10 +471,6 @@ body:has(.all-challenges-main) .booking-popup .btn-primary:focus-visible {
   border-color: var(--ac-accent-soft);
 }
 
-body:has(.all-challenges-main) .booking-back-link {
-  color: var(--ac-accent);
-}
-
 /* little animations */
 
 @keyframes ac-fade-up {

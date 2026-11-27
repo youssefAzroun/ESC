@@ -83,7 +83,14 @@ function openBookingPopup(challenge) {
           '<form class="booking-form booking-form-step2" novalidate></form>' +
         '</div>' +
         '<div data-booking-step="3" class="booking-step booking-step-thanks" hidden>' +
-          '<h2>Thank you!</h2>' +
+          '<div class="booking-thanks-icon" aria-hidden="true">' +
+            '<svg viewBox="0 0 48 48" width="56" height="56">' +
+              '<circle cx="24" cy="24" r="22" fill="#eef2ff"/>' +
+              '<path d="M14 24.5 21 31.5 34 17" fill="none" stroke="#6b46c1" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '</svg>' +
+          '</div>' +
+          '<h2 class="booking-thanks-title">Thank you!</h2>' +
+          '<p class="booking-thanks-text">Your booking is confirmed. We look forward to seeing you.</p>' +
           '<button class="booking-back-link" type="button">Back to challenges</button>' +
         '</div>';
     document.body.appendChild(bookingPopup);
